@@ -91,7 +91,7 @@ def CalcDeltas(A, c, basis):
     return d
 
 def replace(A, basis, delta):
-    src_index = delta.index(max(delta))
+    src_index = delta.index(max(delta[1::]))
     vec = getVector(A, src_index)
     dst_index = 0
     ratio = 999999
@@ -178,10 +178,13 @@ def SolveDefault(A, c, basis, base_vectors):
 
     print("Optimum:", -deltas[0])
     print("Result vector: {", end=' ')
-    for i in basis:
-        if i <= base_vectors:
+    for i in range(1, base_vectors + 1):
+        if i in basis:
             print(A[basis.index(i)][0], end=' ')
+        else:
+            print(0, end=' ')
     print("}")
+
     
 def solveX(A1, c1, m1, base_vectors):
     try:
@@ -194,6 +197,11 @@ def solveX(A1, c1, m1, base_vectors):
             deltas = CalcDoubleDeltas(A1, c1, basis, m1)
             nice_print_X(A1, c1, basis, deltas)
         SolveDefault(A1, c1, basis, base_vectors)
+        for i in range(3):
+            temp = input()
+            if temp != 'q':
+                c1[i] = int(temp)
+        SolveDefault(A1, c1, basis, base_vectors)
     except:
         print("smth wrong with your model")
 
@@ -201,8 +209,8 @@ def solveX(A1, c1, m1, base_vectors):
 A_input, b_input, c_input = rm.fillMatrices()
 
 # check
-res = sc.optimize.linprog(A_ub= [[2, 5, 1], [5, 30, 2]], b_ub=[250, 1000], c=[-105, -450, -13], bounds=(10, None), method='simplex')
-print(res)
+# res = sc.optimize.linprog(A_ub= [[2, 5, 1], [5, 30, 2]], b_ub=[250, 1000], c=[-105, -450, -13], bounds=(10, None), method='simplex')
+# print(res)
 
 # max index of default vector
 base_vectors = len(A_input[0])
@@ -218,3 +226,11 @@ c_input.insert(0, 0)
 
 # function-driver
 solveX(A_input, c_input, m_input, base_vectors)
+# bas = determineBasis(A_input)
+# SolveDefault(A_input, c_input, bas, 2)
+
+# for i in range(2):
+#     temp = input()
+#     #if temp != 'q':
+#     c_input[i + 1] = -1 * int(temp)
+# SolveDefault(A_input, c_input, bas, base_vectors)

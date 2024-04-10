@@ -2,15 +2,15 @@ def fill(array, list):
     if len(array) != len(list):
         return False
     for i in range(len(array)):
-        if int(list[i]) >= 0:
-            array[i] = int(list[i])
-        else:
-            return False
+      #  if int(list[i]) >= 0:
+        array[i] = int(list[i])
+       # else:
+       #     return False
     return True
 
 def readConstrains(prices, costs, plan, restrictions, p):
     flag = True
-    f = open("C:/Users/Markk/Downloads/Telegram Desktop/requirements.txt")
+    f = open("C:/Users/Markk/Downloads/Telegram Desktop/Simplex/requirements.txt")
     for i in f.readlines():
         temp = i.replace(' ', '').split(':')
         if i[0] == '#' or len(i) == 1:

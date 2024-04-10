@@ -201,6 +201,8 @@ def solveX(A1, c1, m1, base_vectors):
             temp = input()
             if temp != 'q':
                 c1[i] = int(temp)
+            else:
+                return
         SolveDefault(A1, c1, basis, base_vectors)
     except:
         print("smth wrong with your model")
@@ -226,11 +228,3 @@ c_input.insert(0, 0)
 
 # function-driver
 solveX(A_input, c_input, m_input, base_vectors)
-# bas = determineBasis(A_input)
-# SolveDefault(A_input, c_input, bas, 2)
-
-# for i in range(2):
-#     temp = input()
-#     #if temp != 'q':
-#     c_input[i + 1] = -1 * int(temp)
-# SolveDefault(A_input, c_input, bas, base_vectors)

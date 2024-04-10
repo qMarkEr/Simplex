@@ -1,0 +1,23 @@
+# Constider that the constraints and the loss function look like this:
+#
+# Loss function: (price[1] - cst) * x1 + (price[2] - cst) * x2 + (price[3] - cst) * x3 -> max 
+#
+# Where cst = dotProduct( costs, pi.requiremets )
+#
+# Constraints: p1.requirements[1] * x1 + p2.requirements[1] * x2 + p3.requirements[1] * x3 <= restrictions[1]
+#             p1.requirements[2] * x1 + p2.requirements[2] * x2 + p3.requirements[2] * x3 <= restrictions[2]
+#             x1 >= plan[1]
+#             x2 >= plan[2]
+#             x3 >= plan[3]
+#
+# Where xi - quantity of products, pi - product
+#
+# Any array of length 2 contains man-hours and a square at the first and last indices correspondently
+
+Prices: 120, 505, 20
+Costs: 5, 1
+Plan: 10, 10, 10
+Restrictions: 250, 1000
+Product1 requirements: 2, 5
+Product2 requirements: 5, 30
+Product3 requirements: 1, 2

@@ -2,43 +2,45 @@ import scipy as sc
 import read_model as rm
 
 def nice_print(A, c, basis, deltas):
-    print('-'*(len(A[0] * 8) + 6))
-    print("B", end='\t')
-    print("CB", end='\t')
+    print('-'*(len(A[0]) * 11))
+    print("{:>10s}".format("B"), end='|')
+    print("{:>10s}".format("CB"), end='|')
     for i in range(len(A[0])):
-        print("P", i, sep = "", end = '\t')
+        print("{:>8s}{:<2d}".format("P", i), end='|')
     print()
     for i in range(len(A)):
-        print(basis[i], end='\t')
-        print(c[basis[i]], end='\t')
+        print('{:10.2f}'.format(basis[i]), end='|')
+        print('{:10.2f}'.format(c[basis[i]]), end='|')
         for j in A[i]:
-            print(round(j, 2), end='\t')
+            print('{:10.2f}'.format(j), end='|')
         print()
-    print(end='\t\t')
+    print()
+    print(' ' * 22, end = '')
     for i in deltas:
-        print(round(i, 2), end='\t')
+        print('{:10.2f}'.format(i), end='|')
     print()
 
 def nice_print_X(A, c, basis, deltas):
-    print('-'*(len(A[0] * 8) + 6))
-    print("B", end='\t')
-    print("CB", end='\t')
+    print('-'*(len(A[0]) * 11))
+    print("{:>10s}".format("B"), end='|')
+    print("{:>10s}".format("CB"), end='|')
     for i in range(len(A[0])):
-        print("P", i, sep = "", end = '\t')
+        print("{:>8s}{:<2d}".format("P", i), end='|')
     print()
     for i in range(len(A)):
-        print(basis[i], end='\t')
-        print(c[basis[i]], end='\t')
+        print('{:10.2f}'.format(basis[i]), end='|')
+        print('{:10.2f}'.format(c[basis[i]]), end='|')
         for j in A[i]:
-            print(round(j, 2), end='\t')
+            print('{:10.2f}'.format(j), end='|')
         print()
-    print(end='\t\t')
-    for i in deltas:
-        print(round(i[1], 2), end='\t')
     print()
-    print(end='\t\t')
+    print(' ' * 22, end = '')
     for i in deltas:
-        print(round(i[0], 2), end='\t')
+        print('{:10.2f}'.format(i[1]), end='|')
+    print()
+    print(' ' * 22, end = '')
+    for i in deltas:
+        print('{:10.2f}'.format(i[0]), end='|')
     print()
 
 def isBasis(vector):
@@ -187,7 +189,7 @@ def SolveDefault(A, c, basis, base_vectors):
 
     
 def solveX(A1, c1, m1, base_vectors):
-    try:
+  #  try:
         basis = determineBasis(A1)
         deltas = CalcDoubleDeltas(A1, c1, basis, m1)
         nice_print_X(A1, c1, basis, deltas)
@@ -204,8 +206,8 @@ def solveX(A1, c1, m1, base_vectors):
             else:
                 return
         SolveDefault(A1, c1, basis, base_vectors)
-    except:
-        print("smth wrong with your model")
+   # except:
+   #     print("smth wrong with your model")
 
 # input data
 A_input, b_input, c_input = rm.fillMatrices()

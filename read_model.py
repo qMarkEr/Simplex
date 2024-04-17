@@ -28,9 +28,9 @@ def fillMatrices():
     costs = []
     
     readConstrains(prices, costs, plan, restrictions, p)
-    if len(restrictions) != len(costs) and len(prices) != len(p) and len(prices) != len(plan) and any(len(i) != len(restrictions) for i in p):
-        print("errrrrorrr")
-        return None, None, None, 0, 0
+    if len(restrictions) != len(costs) or len(prices) != len(p) or len(prices) != len(plan) or any(len(i) != len(restrictions) for i in p):
+        raise Exception("Model is incorrect")
+    
     lessOrEqual = len(restrictions)
     moreOrEqual = len(plan)
     prices = [prices[i] - costs[0] * p[i][0] - costs[1] * p[i][1] for i in range(len(prices))]

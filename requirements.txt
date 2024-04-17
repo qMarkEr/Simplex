@@ -14,11 +14,12 @@
 #
 # Any array of length 2 contains man-hours and a square at the first and last indices correspondently
 
-Prices: 120, 505, 20
-Costs: 5, 1
-Plan: 10, 10, 10
-Restrictions: 250, 1000
+Prices: 120, 505, 20, 400
+Costs: 5, 1, 2
+Plan: 10, 10, 10, 10
+Restrictions: 250, 1000, 800
 # products sorted in ascending order (1, 2, 3, ...)
-Product: 2, 5
-Product: 5, 30
-Product: 1, 2
+Product: 2, 5, 10
+Product: 5, 30, 15
+Product: 1, 2, 40
+Product: 7, 20, 8

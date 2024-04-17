@@ -180,7 +180,8 @@ def SolveDefault(A, c, basis, base_vectors):
 
     print("Optimum:", -deltas[0])
     print("Result vector: {", end=' ')
-# ???????????
+    for i in range(1, base_vectors + 1):
+        print(A[basis.index(i)][0], end = ' ')
     print("}")
 
 
@@ -220,13 +221,15 @@ def sensetiveAnalysis(A, c, basis, base_vectors):
     int_l = []
     int_u = []
     for i in intervals_b:
-        int_l.append(min(i))
+        if len(i) != 0:
+            int_l.append(min(i))
     for i in intervals_t:
-        int_u.append(max(i))
+        if len(i) != 0:
+            int_u.append(max(i))
     return (int_l, int_u)
 
 def solveX(A1, c1, m1, base_vectors):
-    #try:
+    try:
         omegas = len(m1)
         basis = determineBasis(A1)
         deltas = CalcDoubleDeltas(A1, c1, basis, m1)
@@ -252,8 +255,13 @@ def solveX(A1, c1, m1, base_vectors):
             print(i, ":", ints[0][i])
 
         print("Price interval")
-        for i in range(len(ints[0])):
-            print("(", -c1[i + 1] + ints[1][i], ",", -c1[i + 1] + ints[0][i], ")")
+        for i in range(max(len(ints[0]), len(ints[1]))):
+            if i < len(ints[1]) and i < len(ints[0]):
+                print("(", -c1[i + 1] + ints[1][i], ",", -c1[i + 1] + ints[0][i], ")")
+            elif i < len(ints[0]):
+                print("(", "inf", ",", -c1[i + 1] + ints[0][i], ")")
+            elif i < len(ints[1]):
+                print("(", -c1[i + 1] + ints[1][i], ",", "inf", ")")
         while True:
             for i in range(base_vectors):
                 temp = input()
@@ -268,11 +276,28 @@ def solveX(A1, c1, m1, base_vectors):
                     SolveDefault(A1.copy(), c1.copy(), basis.copy(), base_vectors)
                     break
         
-    #except:
-    #    print("smth wrong with your model")
+    except Exception as e:
+        print("smth wrong:", e)
 
 # input data
-A_input, b_input, c_input, more, less = rm.fillMatrices()
+try:
+    A_input, b_input, c_input, more, less = rm.fillMatrices()
+    base_vectors = len(A_input[0])
+
+    # add fake vectors
+    equalizeLessOrEqual(A_input, c_input, less)
+    m_input = equalizeMoreOrEqual(A_input, c_input, more)
+
+    #add P0
+    for (i, j) in zip(A_input, b_input):
+        i.insert(0, j)
+    c_input.insert(0, 0)
+
+    # function-driver
+    solveX(A_input, c_input, m_input, base_vectors)
+except Exception as e:
+    print(e)
+    
 # A_input = [[-1, 1], [0, 1], [1, 0]]
 # b_input = [2, 1, 3]
 # c_input = [-6, -10]
@@ -282,19 +307,7 @@ A_input, b_input, c_input, more, less = rm.fillMatrices()
 # print(res)
 
 # max index of default vector
-base_vectors = len(A_input[0])
 
-# add fake vectors
-equalizeLessOrEqual(A_input, c_input, less)
-m_input = equalizeMoreOrEqual(A_input, c_input, more)
-
-#add P0
-for (i, j) in zip(A_input, b_input):
-    i.insert(0, j)
-c_input.insert(0, 0)
-
-# function-driver
-solveX(A_input, c_input, m_input, base_vectors)
 # bas = determineBasis(A_input)
 # SolveDefault(A_input, c_input, bas, base_vectors)
 # ints = sensetiveAnalysis(A_input, c_input, bas, base_vectors)

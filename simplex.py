@@ -168,22 +168,31 @@ def replaceOmega(A, c, basis, m_indices, delta):
     return src_index
 
 def SolveDefault(A, c, basis, base_vectors):
-    deltas = CalcDeltas(A, c, basis)
-    nice_print(A, c, basis, deltas)
-
-    # main loop
-    while any(x > 0 for x in deltas[1:]):
-        new_vec = replace(A, basis, deltas)
-        substract(A, new_vec, basis.index(new_vec))
+    try:
         deltas = CalcDeltas(A, c, basis)
-        nice_print(A, c, basis, deltas)
+    # nice_print(A, c, basis, deltas)
 
-    print("Optimum:", -deltas[0])
-    print("Result vector: {", end=' ')
-    for i in range(1, base_vectors + 1):
-        print(A[basis.index(i)][0], end = ' ')
-    print("}")
+        # main loop
+        while any(x > 0 for x in deltas[1:]):
+            new_vec = replace(A, basis, deltas)
+            substract(A, new_vec, basis.index(new_vec))
+            deltas = CalcDeltas(A, c, basis)
+        # nice_print(A, c, basis, deltas)
 
+    # print("Optimum:", -deltas[0])
+        res_vec = []
+    # print("Result vector: {", end=' ')
+        for i in range(1, base_vectors + 1):
+            if i in basis:
+                res_vec.append(A[basis.index(i)][0])
+            #   print(A[basis.index(i)][0], end = ' ')
+            else:
+                res_vec.append(0)
+            #  print(0, end = ' ')
+    # print("}")
+        return res_vec
+    except:
+        print(":(")
 
 def Transpose(m):
     res = [[0 for _ in range(len(m[0]))] for _ in range(len(m))]
@@ -265,7 +274,7 @@ def solveX(A1, c1, m1, base_vectors):
         while True:
             for i in range(base_vectors):
                 temp = input()
-                if temp != 'q':
+                if temp != 'q' and temp != '':
                     c1[i + 1] = -float(temp)
                 else:
                     return
@@ -278,52 +287,3 @@ def solveX(A1, c1, m1, base_vectors):
         
     except Exception as e:
         print("smth wrong:", e)
-
-# input data
-try:
-    A_input, b_input, c_input, more, less = rm.fillMatrices()
-    base_vectors = len(A_input[0])
-
-    # add fake vectors
-    equalizeLessOrEqual(A_input, c_input, less)
-    m_input = equalizeMoreOrEqual(A_input, c_input, more)
-
-    #add P0
-    for (i, j) in zip(A_input, b_input):
-        i.insert(0, j)
-    c_input.insert(0, 0)
-
-    # function-driver
-    solveX(A_input, c_input, m_input, base_vectors)
-except Exception as e:
-    print(e)
-    
-# A_input = [[-1, 1], [0, 1], [1, 0]]
-# b_input = [2, 1, 3]
-# c_input = [-6, -10]
-
-# check
-# res = sc.optimize.linprog(A_ub= [[2, 5, 1], [5, 30, 2]], b_ub=[250, 1000], c=[-105, -450, -13], bounds=(10, None), method='simplex')
-# print(res)
-
-# max index of default vector
-
-# bas = determineBasis(A_input)
-# SolveDefault(A_input, c_input, bas, base_vectors)
-# ints = sensetiveAnalysis(A_input, c_input, bas, base_vectors)
-# print(ints)
-# # for i in range(len(ints)):
-# #     ints[i] -= c_input[i + 1]
-
-# for i in range(base_vectors):
-#     temp = input()
-#     if temp != 'q':
-#         c_input[i + 1] = -int(temp)
-#     else:
-#         break
-# deltas = CalcDeltas(A_input, c_input, bas)
-# print(deltas)
-# for i in range(len(ints)):
-#     if any(x > 0 for x in deltas):
-#         SolveDefault(A_input, c_input, bas, base_vectors)
-#         break
